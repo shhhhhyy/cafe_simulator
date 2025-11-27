@@ -1,10 +1,3 @@
-import random
-from pypdevs.DEVS import AtomicDEVS
-from pypdevs.simulator import Simulator
-from pypdevs.DEVS import *
-from pypdevs.infinity import INFINITY
-from pypdevs.DEVS import CoupledDEVS
-
 # ----------------------------------------------------------------------
 # 2인석 대기열 atomic 모델
 # ----------------------------------------------------------------------
