@@ -5,10 +5,9 @@ from pypdevs.DEVS import *
 from pypdevs.infinity import INFINITY
 from pypdevs.DEVS import CoupledDEVS
 
-
-
-
+# ----------------------------------------------------------------------
 # 2인석 대기열 atomic 모델
+# ----------------------------------------------------------------------
 class Waiting2AMState:
     def __init__(self, current="WAIT"):
         self.set(current)
@@ -119,7 +118,10 @@ class Waiting2AM(AtomicDEVS):
 
         return self.state
 
+
+# ----------------------------------------------------------------------
 # 4인석 대기열 atomic 모델
+# ----------------------------------------------------------------------
 class Waiting4AMState:
     def __init__(self, current="WAIT"):
         self.set(current)
@@ -222,11 +224,10 @@ class Waiting4AM(AtomicDEVS):
 
         return self.state
 
+
+# ----------------------------------------------------------------------
 # 좌석 대기열 coupled model
-
-# from waiting2_am import Waiting2AM  # ← 반드시 Waiting2AM 클래스 정의가 되어 있어야 합니다
-# from waiting4_am import Waiting4AM  # ← 마찬가지로 Waiting4AM 정의 필요
-
+# ----------------------------------------------------------------------
 # 최대 좌석 수 정의
 max2 = 2
 max4 = 2
@@ -273,12 +274,3 @@ class HallSeatQueueCM(CoupledDEVS):
         
         self.connectPorts(self.waiting2.out_order, self.out_order2)
         self.connectPorts(self.waiting4.out_order, self.out_order4)
-
-
-# top = Welcom("RestaurantSystem", max2=2, max4=2)
-
-# sim = Simulator(top)
-# sim.setClassicDEVS()
-# sim.setVerbose()
-# sim.setTerminationTime(50)
-# sim.simulate()
