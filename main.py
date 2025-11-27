@@ -3,6 +3,7 @@ import generator
 import waiting
 import order
 import welcome
+from welcome import Welcome
 
 # pypdevs 임포트
 from pypdevs.DEVS import *
