@@ -9,7 +9,7 @@ import random
 # ----------------------------------------------------------------------
 # 카페 coupled 모델
 # ----------------------------------------------------------------------
-class Welcom(CoupledDEVS):
+class Welcome(CoupledDEVS):
     def __init__(self, name, max2, max4):
         CoupledDEVS.__init__(self,name)
 
