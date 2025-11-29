@@ -35,7 +35,9 @@ if __name__ == "__main__":
 
     sim = Simulator(top)
     sim.setClassicDEVS()
-    sim.setVerbose()
+    # JSON 출력 모드일 때는 절대 Verbose 켜면 안 됨
+    if not args.json:
+        sim.setVerbose()
     sim.setTerminationTime(50)  # sim_time 제거 → 고정값 50
     sim.simulate()
 
