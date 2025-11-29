@@ -2,6 +2,7 @@ import argparse
 import csv
 import os
 import json
+import sys
 
 # 파일 임포트
 import welcome
@@ -19,8 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("-two", "--max2", type=int, default=2)
     parser.add_argument("-four", "--max4", type=int, default=2)
     parser.add_argument("--save_path", type=str, default="sim_result.csv")
-    parser.add_argument("--json", action="store_true")  # ★ JSON 출력 모드 추가
-
+    parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
 
     # ----------------------------
@@ -33,22 +33,29 @@ if __name__ == "__main__":
         max4=args.max4,
     )
 
+    # ----------------------------
+    # JSON 모드면 모든 출력 차단
+    # ----------------------------
+    if args.json:
+        sys.stdout = open(os.devnull, 'w')
+
+    # ----------------------------
+    # Simulation
+    # ----------------------------
     sim = Simulator(top)
     sim.setClassicDEVS()
-    # JSON 출력 모드일 때는 절대 Verbose 켜면 안 됨
-    if not args.json:
+
+    if not args.json:   # JSON 모드 아닐 때만 verbose 출력
         sim.setVerbose()
-    sim.setTerminationTime(50)  # sim_time 제거 → 고정값 50
+
+    sim.setTerminationTime(50)
     sim.simulate()
 
     # ----------------------------
     # Worker count 조회
     # ----------------------------
     ow = top.orderworker
-    total_customers = 0
-
-    for w in ow.workers:
-        total_customers += w.count
+    total_customers = sum([w.count for w in ow.workers])
 
     # ----------------------------
     # 회전율 계산
@@ -59,25 +66,28 @@ if __name__ == "__main__":
     # ----------------------------
     # 순수익 계산
     # ----------------------------
-    drink_price = 5000 
-    labor_cost = args.max_worker * 10500
-    seat_cost = total_seats * 1000
+    drink_price = 5000
+    labor_cost = args.max_worker * 110000
+    seat_cost = args.max2 * 500 + args.max4 * 1000
     revenue = total_customers * drink_price
     net_profit = revenue - labor_cost - seat_cost
 
     # ----------------------------
-    # JSON 모드: 바로 결과 출력 후 종료
+    # JSON 모드: JSON 한 줄만 출력 후 종료
     # ----------------------------
     if args.json:
+        # stdout 복원
+        sys.stdout = sys.__stdout__
+
         result = {
             "turnover": turnover_rate,
             "net_profit": net_profit
         }
         print(json.dumps(result))
-        exit()  # CSV 저장 없이 종료
+        exit()
 
     # ----------------------------
-    # CSV 저장
+    # CSV 저장 (일반 모드)
     # ----------------------------
     save_path = args.save_path
     file_exists = os.path.exists(save_path)
