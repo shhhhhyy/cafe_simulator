@@ -1,7 +1,28 @@
 import pandas as pd
 import argparse
+import os
+import csv
 
-def best_for_X(df, Xw, Xtwo, Xfour):
+def append_xy(out_path, Xw, Xtwo, Xfour, best_df):
+    write_header = not os.path.exists(out_path)
+
+    with open(out_path, "a", newline="") as f:
+        writer = csv.writer(f)
+
+        if write_header:
+            writer.writerow(["Xw", "Xtwo", "Xfour", "alpha", "Yw", "Ytwo", "Yfour"])
+
+        for _, row in best_df.iterrows():
+            writer.writerow([
+                Xw, Xtwo, Xfour, 
+                int(row["alpha"]),
+                int(row["w"]),
+                int(row["two"]),
+                int(row["four"])
+            ])
+
+
+def best_for_X(df, Xw, Xtwo, Xfour, out_csv=None):
     df_sub = df[
         (df["w"] <= Xw) &
         (df["two"] <= Xtwo) &
@@ -10,19 +31,25 @@ def best_for_X(df, Xw, Xtwo, Xfour):
 
     if df_sub.empty:
         print("❌ 해당 조건에 해당하는 row 없음")
-        return
+        return None
 
     print("\n========= X에서 가능한 subset ==========")
     print(df_sub.head())
 
-    # alpha별 best score 선택
+    # alpha별 best score 행만 추출
     best = df_sub.loc[df_sub.groupby("alpha")["score"].idxmax()]
 
     print("\n======= α별 최적 조합(Y) =======")
     print(best)
     print("===============================")
 
+    # 🔥 CSV 저장 추가
+    if out_csv is not None:
+        append_xy(out_csv, Xw, Xtwo, Xfour, best)
+        print(f"\n📌 XY 데이터가 저장되었습니다 → {out_csv}\n")
+
     return best
+
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
@@ -30,8 +57,9 @@ if __name__=="__main__":
     parser.add_argument("--Xw", type=int, required=True)
     parser.add_argument("--Xtwo", type=int, required=True)
     parser.add_argument("--Xfour", type=int, required=True)
+    parser.add_argument("--out_csv", type=str, default=None)
     args = parser.parse_args()
 
     df = pd.read_csv(args.csv)
 
-    best_for_X(df, args.Xw, args.Xtwo, args.Xfour)
+    best_for_X(df, args.Xw, args.Xtwo, args.Xfour, out_csv=args.out_csv)
