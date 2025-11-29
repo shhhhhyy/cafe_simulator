@@ -1,6 +1,7 @@
 import argparse
 import csv
 import os
+import json
 
 # 파일 임포트
 import welcome
@@ -17,8 +18,8 @@ if __name__ == "__main__":
     parser.add_argument("-w", "--max_worker", type=int, default=5)
     parser.add_argument("-two", "--max2", type=int, default=2)
     parser.add_argument("-four", "--max4", type=int, default=2)
-    parser.add_argument("-b", "--budget", type=int, default=10000000)
     parser.add_argument("--save_path", type=str, default="sim_result.csv")
+    parser.add_argument("--json", action="store_true")  # ★ JSON 출력 모드 추가
 
     args = parser.parse_args()
 
@@ -44,50 +45,46 @@ if __name__ == "__main__":
     ow = top.orderworker
     total_customers = 0
 
-    ## 판매된 음료 잔수 == 방문한 사람 수
     for w in ow.workers:
-        print(w.name, "총 만든 잔수 =", w.count)
         total_customers += w.count
 
     # ----------------------------
     # 회전율 계산
     # ----------------------------
-    ## 총 좌석 수
     total_seats = args.max2 * 2 + args.max4 * 4
-
-    ## 회전율 = 판매된 음료 잔수 / 좌석 수
     turnover_rate = total_customers / total_seats if total_seats > 0 else 0
 
     # ----------------------------
     # 순수익 계산
     # ----------------------------
-    ## 음료 한잔 
     drink_price = 5000 
-    ## 총 인건비 ( 최저시급 * 일한 시간)을 곱해야하는데 -> 일한 시간은 우짜징 
     labor_cost = args.max_worker * 10500
-    ## 좌석비용
     seat_cost = total_seats * 1000
-    ## 매출 = 방문한 고객수 * 음료 한잔 가격
     revenue = total_customers * drink_price
-    ## 순수익 계산 = 매출 - 총 인건비 - 좌석 비용
     net_profit = revenue - labor_cost - seat_cost
 
-    print("\n===== 시뮬레이션 요약 =====")
-    print("회전율 =", turnover_rate)
-    print("순수익 =", net_profit)
+    # ----------------------------
+    # JSON 모드: 바로 결과 출력 후 종료
+    # ----------------------------
+    if args.json:
+        result = {
+            "turnover": turnover_rate,
+            "net_profit": net_profit
+        }
+        print(json.dumps(result))
+        exit()  # CSV 저장 없이 종료
 
     # ----------------------------
-    # CSV 저장 (없으면 생성, 있으면 append)
+    # CSV 저장
     # ----------------------------
     save_path = args.save_path
     file_exists = os.path.exists(save_path)
 
-    header = ["max_worker", "max2", "max4", "budget"," turnover", "net_profit"]
+    header = ["max_worker", "max2", "max4", "turnover", "net_profit"]
     row = [
         args.max_worker,
         args.max2,
         args.max4,
-        args.budget,
         turnover_rate,
         net_profit
     ]

@@ -1,0 +1,86 @@
+import argparse
+import subprocess
+import json
+import csv
+import os
+
+
+def run_simulation(w, two, four, budget):
+    """
+    main_modify.py를 실행하여 JSON 결과 반환
+    """
+    cmd = [
+        "python", "main_modify.py",
+        "-w", str(w),
+        "-two", str(two),
+        "-four", str(four),
+        "-b", str(budget),
+        "--json"
+    ]
+
+    output = subprocess.check_output(cmd)
+    data = json.loads(output.decode("utf-8"))
+    return data  # {"turnover": x, "net_profit": y}
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-w", "--max_worker", type=int, required=True)
+    parser.add_argument("-two", "--max2", type=int, required=True)
+    parser.add_argument("-four", "--max4", type=int, required=True)
+    parser.add_argument("-b", "--budget", type=int, required=True)
+    parser.add_argument("--save_path", type=str, default="xy_dataset.csv")
+    args = parser.parse_args()
+
+    max_w = args.max_worker
+    max2 = args.max2
+    max4 = args.max4
+    budget = args.budget
+
+    best_profit = -1e18
+    best_combo = (0, 0, 0)
+
+    print(f"\n▶ 전체 조합 탐색 시작: {max_w} x {max2+1} x {max4+1} 조합\n")
+
+    for w in range(1, max_w + 1):
+        for two in range(0, max2 + 1):
+            for four in range(0, max4 + 1):
+
+                result = run_simulation(w, two, four, budget)
+                profit = result["net_profit"]
+
+                if profit > best_profit:
+                    best_profit = profit
+                    best_combo = (w, two, four)
+
+                print(f"  → w={w}, 2={two}, 4={four}, profit={profit}")
+
+    print("\n===== 최종 최적 조합(Y) =====")
+    print("best_worker =", best_combo[0])
+    print("best_2seats =", best_combo[1])
+    print("best_4seats =", best_combo[2])
+    print("best_profit =", best_profit)
+
+    # ----------------------------
+    # X → Y 저장
+    # ----------------------------
+    X = [max_w, max2, max4, budget]
+    Y = list(best_combo)
+
+    row = X + Y
+
+    save_path = args.save_path
+    file_exists = os.path.exists(save_path)
+
+    header = [
+        "X_max_worker", "X_max2", "X_max4", "X_budget",
+        "Y_best_worker", "Y_best2", "Y_best4"
+    ]
+
+    with open(save_path, "a", newline="") as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(header)
+        writer.writerow(row)
+
+    print(f"\n[X→Y] CSV 저장 완료 → {save_path}")
