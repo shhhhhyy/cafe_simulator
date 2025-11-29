@@ -34,7 +34,7 @@ if __name__ == "__main__":
     best_profit = -1e18
     best_combo = (0, 0, 0)
 
-    print(f"\n▶ 전체 조합 탐색 시작: {max_w} x {max2} x {max4} 조합\n")
+    #print(f"\n▶ 전체 조합 탐색 시작: {max_w} x {max2} x {max4} 조합\n")
 
     for w in range(1, max_w + 1):
         for two in range(1, max2 + 1):
