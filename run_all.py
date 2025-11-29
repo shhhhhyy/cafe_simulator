@@ -5,15 +5,13 @@ import csv
 import os
 
 
-def run_simulation(w, two, four):
-    """
-    main_modify.py를 실행하여 JSON 결과 반환
-    """
+def run_simulation(w, two, four, budget):
     cmd = [
-        "python", "main_modify.py",
+        "python", "/content/PythonPDEVS/src/cafe_simulator/main_modify.py",
         "-w", str(w),
         "-two", str(two),
         "-four", str(four),
+        "-b", str(budget),
         "--json"
     ]
 
@@ -37,7 +35,7 @@ if __name__ == "__main__":
     best_profit = -1e18
     best_combo = (0, 0, 0)
 
-    print(f"\n▶ 전체 조합 탐색 시작: {max_w} x {max2+1} x {max4+1} 조합\n")
+    print(f"\n▶ 전체 조합 탐색 시작: {max_w} x {max2} x {max4} 조합\n")
 
     for w in range(1, max_w + 1):
         for two in range(1, max2 + 1):
