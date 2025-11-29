@@ -7,7 +7,7 @@ import os
 
 def run_simulation(w, two, four):
     cmd = [
-        "python", "/content/PythonPDEVS/src/cafe_simulator/main_modify.py",
+        "python", "/content/PythonPDEVS/src/cafe_simulator/main2.py",
         "-w", str(w),
         "-two", str(two),
         "-four", str(four),
