@@ -40,8 +40,8 @@ if __name__ == "__main__":
     print(f"\n▶ 전체 조합 탐색 시작: {max_w} x {max2+1} x {max4+1} 조합\n")
 
     for w in range(1, max_w + 1):
-        for two in range(0, max2 + 1):
-            for four in range(0, max4 + 1):
+        for two in range(1, max2 + 1):
+            for four in range(1, max4 + 1):
 
                 result = run_simulation(w, two, four)
                 profit = result["net_profit"]
