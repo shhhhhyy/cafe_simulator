@@ -5,7 +5,7 @@ import csv
 import os
 
 
-def run_simulation(w, two, four, budget):
+def run_simulation(w, two, four):
     """
     main_modify.py를 실행하여 JSON 결과 반환
     """
@@ -14,7 +14,6 @@ def run_simulation(w, two, four, budget):
         "-w", str(w),
         "-two", str(two),
         "-four", str(four),
-        "-b", str(budget),
         "--json"
     ]
 
@@ -28,14 +27,12 @@ if __name__ == "__main__":
     parser.add_argument("-w", "--max_worker", type=int, required=True)
     parser.add_argument("-two", "--max2", type=int, required=True)
     parser.add_argument("-four", "--max4", type=int, required=True)
-    parser.add_argument("-b", "--budget", type=int, required=True)
     parser.add_argument("--save_path", type=str, default="xy_dataset.csv")
     args = parser.parse_args()
 
     max_w = args.max_worker
     max2 = args.max2
     max4 = args.max4
-    budget = args.budget
 
     best_profit = -1e18
     best_combo = (0, 0, 0)
@@ -46,7 +43,7 @@ if __name__ == "__main__":
         for two in range(0, max2 + 1):
             for four in range(0, max4 + 1):
 
-                result = run_simulation(w, two, four, budget)
+                result = run_simulation(w, two, four)
                 profit = result["net_profit"]
 
                 if profit > best_profit:
@@ -64,7 +61,7 @@ if __name__ == "__main__":
     # ----------------------------
     # X → Y 저장
     # ----------------------------
-    X = [max_w, max2, max4, budget]
+    X = [max_w, max2, max4]
     Y = list(best_combo)
 
     row = X + Y
@@ -73,7 +70,7 @@ if __name__ == "__main__":
     file_exists = os.path.exists(save_path)
 
     header = [
-        "X_max_worker", "X_max2", "X_max4", "X_budget",
+        "X_max_worker", "X_max2", "X_max4",
         "Y_best_worker", "Y_best2", "Y_best4"
     ]
 
