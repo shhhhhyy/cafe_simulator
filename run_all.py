@@ -5,13 +5,12 @@ import csv
 import os
 
 
-def run_simulation(w, two, four, budget):
+def run_simulation(w, two, four):
     cmd = [
         "python", "/content/PythonPDEVS/src/cafe_simulator/main_modify.py",
         "-w", str(w),
         "-two", str(two),
         "-four", str(four),
-        "-b", str(budget),
         "--json"
     ]
 
