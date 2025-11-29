@@ -19,7 +19,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-w","--max_worker", type=int, default=5, help="총 worker 수")
     parser.add_argument("-two","--max2", type=int, default=2, help="2인석 수")
-    parser.add_argument("-four","--ax4", type=int, default=2, help="4인석 수")
+    parser.add_argument("-four","--max4", type=int, default=2, help="4인석 수")
     parser.add_argument("-tt","--termination_time", type=float, default=50, help="시뮬레이션 종료 시간")
 
     args = parser.parse_args()
