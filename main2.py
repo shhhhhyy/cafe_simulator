@@ -48,7 +48,7 @@ if __name__ == "__main__":
     if not args.json:   # JSON 모드 아닐 때만 verbose 출력
         sim.setVerbose()
 
-    sim.setTerminationTime(50)
+    sim.setTerminationTime(600)
     sim.simulate()
 
     # ----------------------------
