@@ -102,18 +102,15 @@ class OrderAM(AtomicDEVS):
         # 3) FREE 상태이고, 대기열이 있고, free worker가 있으면 SEND 상태로 전환
         if state == "FREE" and self.queue:
             # 가장 번호가 작은 free worker 선택
-            free_worker_idx = None
-            for i in range(self.max_worker):
-                if not self.worker_busy[i]:
-                    free_worker_idx = i + 1
-                    break
+            free_workers = [i+1 for i in range(self.max_worker) if not self.worker_busy[i]]
 
-            if free_worker_idx is not None:
+            if free_workers:  # free worker가 하나라도 있으면
+                free_worker_idx = random.choice(free_workers)  # 랜덤 선택
+
                 self.target_worker = free_worker_idx
                 self.current_order = self.queue.pop(0)
                 self.worker_busy[free_worker_idx - 1] = True
-                #self.state = OrderAMState("SEND")
-                self.state.set("SEND")  
+                self.state.set("SEND")
 
         return self.state
 

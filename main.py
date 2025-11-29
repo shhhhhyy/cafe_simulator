@@ -17,3 +17,8 @@ sim.setClassicDEVS()
 sim.setVerbose()
 sim.setTerminationTime(50)
 sim.simulate()
+
+# Worker count 조회
+ow = top.orderworker
+for w in ow.workers:
+    print(w.name, "총 만든 잔수 =", w.count)
