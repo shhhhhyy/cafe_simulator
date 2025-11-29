@@ -10,7 +10,8 @@ from pypdevs.DEVS import CoupledDEVS
 from pypdevs.simulator import Simulator
 import random
 
-top = welcome.Welcome("RestaurantSystem", max2=2, max4=2)
+# worker수, 2인석, 4인석
+top = welcome.Welcome("RestaurantSystem", max_worker = 5, max2=2, max4=2)
 
 sim = Simulator(top)
 sim.setClassicDEVS()
