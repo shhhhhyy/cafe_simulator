@@ -196,7 +196,7 @@ class WorkerAM(AtomicDEVS):
             outputs = {}
             # OrderAM에게 완료 알림
             outputs[self.out_done] = ("done", self.id)
-            self.count += self.n
+            self.count += 1
 
             # 손님에게 결과 전달
             if self.ht in ("H2", "H4"):

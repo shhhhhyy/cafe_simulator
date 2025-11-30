@@ -24,7 +24,7 @@ class SeatStatus:
 # 2인석 좌석 배치 모델
 # ------------------------------------------
 class SeatPlacement2AM(AtomicDEVS):
-    def __init__(self, name, max2,max_stay):
+    def __init__(self, name, max2):
         super().__init__(name)
         self.max2 = max2  # 최대 좌석 수
 
@@ -43,7 +43,7 @@ class SeatPlacement2AM(AtomicDEVS):
 
         # 체류시간 범위
         self.min_stay = 30
-        self.max_stay = max_stay
+        self.max_stay = 60
 
     def timeAdvance(self):
         return min(self.timers) if self.status.get() == "ACTIVE" else INFINITY
@@ -117,7 +117,7 @@ class SeatPlacement2AM(AtomicDEVS):
 # 4인석 좌석 배치 모델
 # ------------------------------------------
 class SeatPlacement4AM(AtomicDEVS):
-    def __init__(self, name, max4,max_stay):
+    def __init__(self, name, max4):
         super().__init__(name)
         self.max4 = max4  # 최대 좌석 수
 
@@ -136,7 +136,7 @@ class SeatPlacement4AM(AtomicDEVS):
 
         # 체류시간 범위
         self.min_stay = 30
-        self.max_stay = max_stay
+        self.max_stay = 60
 
     def timeAdvance(self):
         return min(self.timers) if self.status.get() == "ACTIVE" else INFINITY
@@ -211,11 +211,11 @@ class SeatPlacement4AM(AtomicDEVS):
 # SeatManager Coupled Model
 # ------------------------------------------
 class SeatManager(CoupledDEVS):
-    def __init__(self, name, max2, max4,max_stay):
+    def __init__(self, name, max2, max4):
         super().__init__(name)
         
-        self.seat2 = self.addSubModel(SeatPlacement2AM("Seat2", max2,max_stay))
-        self.seat4 = self.addSubModel(SeatPlacement4AM("Seat4", max4,max_stay))
+        self.seat2 = self.addSubModel(SeatPlacement2AM("Seat2", max2))
+        self.seat4 = self.addSubModel(SeatPlacement4AM("Seat4", max4))
         
         self.in_serving2 = self.addInPort("in_serving2")
         self.in_serving4 = self.addInPort("in_serving4")

@@ -19,9 +19,6 @@ if __name__ == "__main__":
     parser.add_argument("-w", "--max_worker", type=int, default=5)
     parser.add_argument("-two", "--max2", type=int, default=2)
     parser.add_argument("-four", "--max4", type=int, default=2)
-
-    parser.add_argument("-stay", "--max_stay",type=int,required=True,choices=[60, 90, 120],help="Maximum stay duration for customers (60, 120, 180 minutes)")
-
     parser.add_argument("--save_path", type=str, default="sim_result.csv")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
@@ -33,8 +30,7 @@ if __name__ == "__main__":
         "RestaurantSystem",
         max_worker=args.max_worker,
         max2=args.max2,
-        max4=args.max4,
-        max_stay=args.max_stay
+        max4=args.max4
     )
 
     # ----------------------------
@@ -65,7 +61,7 @@ if __name__ == "__main__":
     # 회전율 계산
     # ----------------------------
     total_seats = args.max2 * 2 + args.max4 * 4
-    turnover_rate = total_customers / total_seats if total_seats > 0 else 0
+    turnover_rate = round(total_customers / total_seats, 2) if total_seats > 0 else 0
 
     # ----------------------------
     # 순수익 계산
@@ -77,11 +73,6 @@ if __name__ == "__main__":
     net_profit = revenue - labor_cost - seat_cost
 
     # ----------------------------
-    #  α 기반 score 계산 ( α =  1000 )
-    # ----------------------------
-    score = net_profit + 1000 * turnover_rate
-
-    # ----------------------------
     # JSON 모드: JSON 한 줄만 출력 후 종료
     # ----------------------------
     if args.json:
@@ -89,8 +80,7 @@ if __name__ == "__main__":
 
         result = {
             "turnover": turnover_rate,
-            "net_profit": net_profit,
-            "score": score
+            "net_profit": net_profit
         }
         print(json.dumps(result))
         exit()
@@ -101,16 +91,14 @@ if __name__ == "__main__":
     save_path = args.save_path
     file_exists = os.path.exists(save_path)
 
-    header = ["max_worker", "max2", "max4", "maxstay",
-              "turnover", "net_profit", "score"]
+    header = ["max_worker", "max2", "max4", 
+              "turnover", "net_profit"]
     row = [
         args.max_worker,
         args.max2,
         args.max4,
-        args.max_stay,
         turnover_rate,
-        net_profit,
-        score
+        net_profit
     ]
 
     with open(save_path, "a", newline="") as f:
