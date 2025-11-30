@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # 순수익 계산
     # ----------------------------
     drink_price = 5000
-    labor_cost = args.max_worker * 110000
+    labor_cost = (args.max_worker -1) * 110000
     seat_cost = args.max2 * 500 + args.max4 * 1000
     revenue = total_customers * drink_price
     net_profit = revenue - labor_cost - seat_cost

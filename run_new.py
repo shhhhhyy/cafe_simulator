@@ -38,7 +38,7 @@ if __name__ == "__main__":
     header = ["w","two","four","max_stay","turnover","net_profit","score"]
 
     # 실행 범위 = (5,10,10)
-    max_w, max2, max4 = 5, 10, 10
+    max_w, max2, max4 = 4, 10, 10
 
     for stay in stays:
         for w, two, four in product(range(1,max_w+1), range(1,max2+1), range(1,max4+1)):
