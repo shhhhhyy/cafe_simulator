@@ -37,7 +37,7 @@ def best_for_X(df, Xw, Xtwo, Xfour, out_csv=None):
     print(df_sub.head())
 
     # max_stay별 best score 행만 추출
-    best = df_sub.loc[df_sub.groupby("stay")["score"].idxmax()]
+    best = df_sub.loc[df_sub.groupby("max_stay")["score"].idxmax()]
 
     print("\n======= α별 최적 조합(Y) =======")
     print(best)
