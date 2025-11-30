@@ -15,7 +15,7 @@ def append_xy(out_path, Xw, Xtwo, Xfour, best_df):
         for _, row in best_df.iterrows():
             writer.writerow([
                 Xw, Xtwo, Xfour, 
-                int(row["stay"]),
+                int(row["max_stay"]),
                 int(row["w"]),
                 int(row["two"]),
                 int(row["four"])
