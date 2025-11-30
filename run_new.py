@@ -28,7 +28,7 @@ def append_with_header(path, header, row):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stays", nargs="+", type=int, default=[60,120,180])
+    parser.add_argument("--stays", nargs="+", type=int, default=[60,90,120])
     parser.add_argument("--save_path", type=str, default="master_results.csv")
     args = parser.parse_args()
 

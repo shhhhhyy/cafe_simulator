@@ -20,9 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("-two", "--max2", type=int, default=2)
     parser.add_argument("-four", "--max4", type=int, default=2)
 
-    # ⭐ α 추가 (60,120,180 중 선택)
-    parser.add_argument("-stay","--max_stay", type=int, default=0, choices=[60,120,180],
-                        help="0=profit only, 1=profit+turnover, 2=profit+2*turnover")
+    parser.add_argument("-stay", "--max_stay",type=int,required=True,choices=[60, 90, 120],help="Maximum stay duration for customers (60, 120, 180 minutes)")
 
     parser.add_argument("--save_path", type=str, default="sim_result.csv")
     parser.add_argument("--json", action="store_true")
