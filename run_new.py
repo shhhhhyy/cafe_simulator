@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     csv_path = args.save_path
 
-    header = ["w","two","four","turnover","net_profit","score"]
+    header = ["w","two","four","turnover","net_profit"]
 
     # 실행 범위 = (5,10,10)
     max_w, max2, max4 = 4, 10, 10
