@@ -33,20 +33,14 @@ def best_for_X(df, Xw, Xtwo, Xfour, out_csv=None):
         print("❌ 해당 조건에 해당하는 row 없음")
         return None
 
-    print("\n========= X에서 가능한 subset ==========")
-    print(df_sub.head())
-
-    # max_stay별 best score 행만 추출
+    # max_stay별 best score 선택
     best = df_sub.loc[df_sub.groupby("max_stay")["score"].idxmax()]
 
-    print("\n======= α별 최적 조합(Y) =======")
-    print(best)
-    print("===============================")
+    # 🚨 max_stay 순으로 정렬 (여기가 핵심)
+    best = best.sort_values("max_stay")
 
-    # 🔥 CSV 저장 추가
     if out_csv is not None:
         append_xy(out_csv, Xw, Xtwo, Xfour, best)
-        print(f"\n📌 XY 데이터가 저장되었습니다 → {out_csv}\n")
 
     return best
 
