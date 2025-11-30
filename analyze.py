@@ -43,11 +43,12 @@ def best_for_X(df, Xw, Xtwo, Xfour, out_csv=None):
         return None
 
     print(f"\n========= X({Xw},{Xtwo},{Xfour}) subset ==========")
-    print(df_sub.head())
+    
 
     # turnover_norm + profit_norm 기반 점수 (가중치 비율 조정가능)
     df_sub["score_norm"] = df_sub["turnover_norm"] * 0.5 + df_sub["profit_norm"] * 0.5
-
+    
+    print(df_sub.head())
     # best 1개 선택
     best = df_sub.loc[df_sub["score_norm"].idxmax()].to_frame().T
 
