@@ -197,16 +197,18 @@ class WorkerAM(AtomicDEVS):
             outputs = {}
             # OrderAM에게 완료 알림
             outputs[self.out_done] = ("done", self.id)
-            self.team_count += 1
+            #self.team_count += 1
             self.customer_count += self.n
 
             # 손님에게 결과 전달
             if self.ht in ("H2", "H4"):
                 if self.n in [1,2]:
                     outputs[self.out_serving2] = ("serving2", self.n)
+                    self.team_count += 1
 
                 if self.n in [3,4]:
                     outputs[self.out_serving4] = ("serving4", self.n)
+                    self.team_count += 1
             else:  # "T" (takeout)
                 outputs[self.out_takeout] = ("takeout", self.n)
 
