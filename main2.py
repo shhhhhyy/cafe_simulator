@@ -20,8 +20,8 @@ if __name__ == "__main__":
     parser.add_argument("-two", "--max2", type=int, default=2)
     parser.add_argument("-four", "--max4", type=int, default=2)
 
-    # ⭐ α 추가 (0,1,2 중 선택)
-    parser.add_argument("--alpha", type=int, default=0, choices=[0,1,2],
+    # ⭐ α 추가 (60,120,180 중 선택)
+    parser.add_argument("-stay","--max_stay", type=int, default=0, choices=[60,120,180],
                         help="0=profit only, 1=profit+turnover, 2=profit+2*turnover")
 
     parser.add_argument("--save_path", type=str, default="sim_result.csv")
@@ -36,6 +36,7 @@ if __name__ == "__main__":
         max_worker=args.max_worker,
         max2=args.max2,
         max4=args.max4,
+        max_stay=args.max_stay
     )
 
     # ----------------------------
@@ -78,9 +79,9 @@ if __name__ == "__main__":
     net_profit = revenue - labor_cost - seat_cost
 
     # ----------------------------
-    # ⭐ α 기반 score 계산
+    #  α 기반 score 계산 ( α =  1000 )
     # ----------------------------
-    score = net_profit + args.alpha * turnover_rate
+    score = net_profit + 1000 * turnover_rate
 
     # ----------------------------
     # JSON 모드: JSON 한 줄만 출력 후 종료
@@ -102,13 +103,13 @@ if __name__ == "__main__":
     save_path = args.save_path
     file_exists = os.path.exists(save_path)
 
-    header = ["max_worker", "max2", "max4", "alpha",
+    header = ["max_worker", "max2", "max4", "maxstay",
               "turnover", "net_profit", "score"]
     row = [
         args.max_worker,
         args.max2,
         args.max4,
-        args.alpha,
+        args.max_stay,
         turnover_rate,
         net_profit,
         score

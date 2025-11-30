@@ -5,13 +5,13 @@ import csv
 import os
 from itertools import product
 
-def run_simulation(w, two, four, alpha):
+def run_simulation(w, two, four, max_stay):
     cmd = [
         "python", "/content/PythonPDEVS/src/cafe_simulator/main2.py",
         "-w", str(w),
         "-two", str(two),
         "-four", str(four),
-        "--alpha", str(alpha),
+        "--max_stay", str(max_stay),
         "--json"
     ]
     output = subprocess.check_output(cmd)
@@ -28,28 +28,28 @@ def append_with_header(path, header, row):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--alphas", nargs="+", type=int, default=[0,1,2])
+    parser.add_argument("--stays", nargs="+", type=int, default=[60,120,180])
     parser.add_argument("--save_path", type=str, default="master_results.csv")
     args = parser.parse_args()
 
-    alphas = args.alphas
+    stays = args.stays
     csv_path = args.save_path
 
-    header = ["alpha","w","two","four","turnover","net_profit","score"]
+    header = ["w","two","four","max_stay","turnover","net_profit","score"]
 
-    # 🔥 유일한 실행 범위 = (5,10,10)
+    # 실행 범위 = (5,10,10)
     max_w, max2, max4 = 5, 10, 10
 
-    for alpha in alphas:
+    for stay in stays:
         for w, two, four in product(range(1,max_w+1), range(1,max2+1), range(1,max4+1)):
-            result = run_simulation(w,two,four,alpha)
+            result = run_simulation(w,two,four,stay)
 
             row = [
-                alpha, w, two, four,
+                w, two, four, stay,
                 result["turnover"],
                 result["net_profit"],
                 result["score"]
             ]
             append_with_header(csv_path, header, row)
 
-            print(f"[OK] α={alpha}, ({w},{two},{four}) 저장됨.")
+            print(f"[OK] max_stay={stay}, ({w},{two},{four}) 저장됨.")

@@ -10,12 +10,12 @@ def append_xy(out_path, Xw, Xtwo, Xfour, best_df):
         writer = csv.writer(f)
 
         if write_header:
-            writer.writerow(["Xw", "Xtwo", "Xfour", "alpha", "Yw", "Ytwo", "Yfour"])
+            writer.writerow(["Xw", "Xtwo", "Xfour", "Xstay", "Yw", "Ytwo", "Yfour"])
 
         for _, row in best_df.iterrows():
             writer.writerow([
                 Xw, Xtwo, Xfour, 
-                int(row["alpha"]),
+                int(row["stay"]),
                 int(row["w"]),
                 int(row["two"]),
                 int(row["four"])
@@ -36,8 +36,8 @@ def best_for_X(df, Xw, Xtwo, Xfour, out_csv=None):
     print("\n========= X에서 가능한 subset ==========")
     print(df_sub.head())
 
-    # alpha별 best score 행만 추출
-    best = df_sub.loc[df_sub.groupby("alpha")["score"].idxmax()]
+    # max_stay별 best score 행만 추출
+    best = df_sub.loc[df_sub.groupby("stay")["score"].idxmax()]
 
     print("\n======= α별 최적 조합(Y) =======")
     print(best)

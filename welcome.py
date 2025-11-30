@@ -14,14 +14,14 @@ import hall
 # 카페 coupled 모델
 # ----------------------------------------------------------------------
 class Welcome(CoupledDEVS):
-    def __init__(self, name, max_worker,max2, max4):
+    def __init__(self, name, max_worker,max2, max4,max_stay):
         CoupledDEVS.__init__(self,name)
 
         # ----- Submodels -----
         self.gen = generator.GEN("GEN")
         self.waiting = waiting.HallSeatQueueCM("Hall", max2, max4)
         self.orderworker = order.OrderWorkerCM("OrderWorker", max_worker=max_worker , make_time=5.0)
-        self.hall = hall.SeatManager("SeatManager", max2, max4)
+        self.hall = hall.SeatManager("SeatManager", max2, max4, max_stay)
 
         self.addSubModel(self.gen)
         self.addSubModel(self.waiting)
