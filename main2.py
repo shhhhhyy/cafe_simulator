@@ -62,15 +62,13 @@ if __name__ == "__main__":
     # 회전율 계산
     # ----------------------------
     total_seats = args.max2 * 2 + args.max4 * 4
-    ## ( 팀수 / 좌석수 ) * ( 1 + 0.3 * ( 직원수 - 1 ))
-    worker_rate = (1 + 0.3 * (args.max_worker - 1))
-    turnover_rate = round(total_teams / total_seats, 2) * worker_rate if total_seats > 0 else 0
+    turnover_rate = round(total_teams / total_seats, 2) if total_seats > 0 else 0
 
     # ----------------------------
     # 순수익 계산
     # ----------------------------
     drink_price = 5000
-    labor_cost = (args.max_worker -1) * 110000
+    labor_cost = (args.max_worker -1) * 44000
     seat_cost = args.max2 * 500 + args.max4 * 1000
     revenue = total_customers * drink_price
     net_profit = revenue - labor_cost - seat_cost
