@@ -61,7 +61,7 @@ if __name__ == "__main__":
     # ----------------------------
     # 회전율 계산
     # ----------------------------
-    total_seats = args.max2 * 2 + args.max4 * 4
+    total_seats = args.max2  + args.max4 
     turnover_rate = round(total_teams / total_seats, 2) if total_seats > 0 else 0
 
     # ----------------------------
