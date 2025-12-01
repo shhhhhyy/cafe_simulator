@@ -32,7 +32,7 @@ def append_xy(out_path, Xw, Xtwo, Xfour, best_df):
 # ------------------------------------
 def best_for_X(df, Xw, Xtwo, Xfour, out_csv=None):
     df_sub = df[
-        (df["w"] == Xw) &
+        (df["w"] <= Xw) &
         (df["two"] <= Xtwo) &
         (df["four"] <= Xfour)
     ]
