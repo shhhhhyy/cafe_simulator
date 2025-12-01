@@ -25,7 +25,7 @@ class GENState:
 
 
 class GEN(AtomicDEVS):
-    def __init__(self, name='GEN', min_time=30, max_time=45):
+    def __init__(self, name='GEN', min_time=10, max_time=30):
         AtomicDEVS.__init__(self, name)
         self.name = name
 
